@@ -6,11 +6,13 @@ using UnityEngine.UI;
 
 public class CannonController : MonoBehaviour
 {
+    private int timeRemaining = 30;
     private float speed = 20;
-    private float turretSpeed = 30;
+    private float turretSpeed = 40;
     [SerializeField] private GameObject turret;
     [SerializeField] private GameObject ball;
     [SerializeField] private Text timerText;
+    [SerializeField] private GameObject restartButton;
     private GameObject introText;
    
 
@@ -18,21 +20,37 @@ public class CannonController : MonoBehaviour
     private float cannonForce = 15000;
     private float cannonPower = 0;
 
-    private int timeRemaining = 60;
+    
     private bool isGameOver = false;
     
 
     // Start is called before the first frame update
     void Start()
     {
+
+        MainManager.Instance.LoadScore();
+
         powerBar = GameObject.Find("Power Bar").GetComponent<Image>();
 
         introText=GameObject.Find("Intro Text");
 
         UpdatePowerBar();
         InvokeRepeating("Countdown",1,1);
-        Invoke("ClearTitle", 4);
-        Invoke("ClearInstructions", 8);
+
+        restartButton.SetActive(false);
+
+        // hack
+        //MainManager.Instance.highScore = 1;
+        //MainManager.Instance.highScoreName = "Jack";
+        //MainManager.Instance.SaveScore();
+
+
+
+
+        GameObject.Find("Highscore Text").GetComponent<Text>().text="High score: "+MainManager.Instance.highScore+" ("+MainManager.Instance.highScoreName+")";
+
+        MainManager.Instance.UpdateScore();
+        MainManager.Instance.isHighScore = false;
     }
 
     // Update is called once per frame
@@ -87,7 +105,7 @@ public class CannonController : MonoBehaviour
 
     public void NextLevel(int level)
     {
-        int addTime = (int)Mathf.Ceil((50.0f / level));
+        int addTime = (int)Mathf.Ceil((40.0f / level));
         if (addTime < 20) addTime = 20;
         timeRemaining += addTime;
 
@@ -100,6 +118,8 @@ public class CannonController : MonoBehaviour
     private void Countdown()
     {
         timerText.text = "Time: "+timeRemaining;
+
+        if (timeRemaining == 10) timerText.color = new Color(1, 0, 0);
         
         if (timeRemaining == 0)
         {
@@ -113,12 +133,16 @@ public class CannonController : MonoBehaviour
 
     private void GameOver()
     {
-        Debug.Log("GAME OVER");
         isGameOver = true;
         Text goText = introText.GetComponent<Text>();
-        goText.text = "GAME OVER";
-        goText.fontSize = 30;
+        string gT= "Game Over";
+
+        goText.text = gT;
+        goText.fontSize = 25;
+        
         introText.SetActive(true);
+        restartButton.SetActive(true);
+     
     }
 
     private void ClearInstructions()
@@ -127,8 +151,5 @@ public class CannonController : MonoBehaviour
 
     }
 
-    private void ClearTitle()
-    {
-        GameObject.Find("Title Text").SetActive(false);
-    }
+ 
 }

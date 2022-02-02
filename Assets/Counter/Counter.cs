@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
+﻿using UnityEngine;
+
+// Tests for when a ball enters the target box
 
 public class Counter : MonoBehaviour
 {

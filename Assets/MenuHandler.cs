@@ -4,9 +4,13 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+//
+// Handles menu button presses
+//
+
 public class MenuHandler : MonoBehaviour
 {
-
+    // Start the game (from the menu)
     public void StartGame()
     {
         Text nF = GameObject.Find("Name Text").GetComponent<Text>();
@@ -16,6 +20,7 @@ public class MenuHandler : MonoBehaviour
         
     }
 
+    // Load the actual game
     public void LoadMain()
     {
         SceneManager.LoadScene(1);

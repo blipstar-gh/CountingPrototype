@@ -4,16 +4,22 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 
+//
+// Persists the player name between scenes
+// Saves and Loands the high score and high score name
+// Updates the score and checks for a new high score
+//
+
 public class MainManager : MonoBehaviour
 {
-    public static MainManager Instance;
+    public static MainManager Instance;     // static instance available to all classes
 
-    public string playerName;
-    public int highScore;
-    public string highScoreName;
-    public bool isHighScore;
+    public string playerName;       // current player name
+    public int highScore;           // high score
+    public string highScoreName;    // high score name
+    public bool isHighScore;        // whether player has just beaten high score
 
-    private int count = 0;
+    private int count = 0;          // score
 
 
     private void Awake()
@@ -30,6 +36,10 @@ public class MainManager : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(gameObject);
     }
+
+    //
+    // Handle saving and loading high score data
+    //
 
     [System.Serializable]
     class SaveData
@@ -62,6 +72,7 @@ public class MainManager : MonoBehaviour
         }
     }
 
+    // Increase score by 1 point. Check if this is a new high score
     public void AddToScore()
     {
         count += 1;
@@ -78,6 +89,7 @@ public class MainManager : MonoBehaviour
         }
     }
 
+    // Update score
     public void UpdateScore()
     {
         GameObject.Find("Count").GetComponent<Text>().text = playerName + ": " + count;
